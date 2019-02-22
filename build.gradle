@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    // Apply the application plugin to add support for building an application
     id 'application'
 }
 
@@ -10,7 +9,7 @@ repositories {
 
 dependencies {
     implementation 'com.google.guava:guava:27.0.1-jre'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.0'
     compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
 }
 

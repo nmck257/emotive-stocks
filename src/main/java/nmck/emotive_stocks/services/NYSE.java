@@ -1,4 +1,4 @@
-package nmck.emotive_stocks;
+package nmck.emotive_stocks.services;
 
 import java.util.Date;
 
