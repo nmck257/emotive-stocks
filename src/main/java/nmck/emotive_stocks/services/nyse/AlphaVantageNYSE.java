@@ -43,6 +43,7 @@ public class AlphaVantageNYSE implements NYSE{
     }
 
     private Response sendRequest(String symbol){
+        LOGGER.info("Requesting stock data for symbol: " + symbol);
         try {
             URL url = formURL(symbol);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -112,13 +113,17 @@ public class AlphaVantageNYSE implements NYSE{
 
         double getGrowthPercentage(LocalDate localDate) {
             if (isError()) throw new IllegalStateException("Cannot get data from error response");
-            if (!hasData(localDate)) return 0.0;
+            if (!hasData(localDate)) {
+                LOGGER.info(String.format("%s No data, no growth", localDate.toString()));
+                return 0.0;
+            } else {
+                DayData data = dataByDay.get(localDate.toString());
+                double growth = (data.close - data.open) / data.open * 100;
+                LOGGER.info(String.format("%s Open, close, growth are: %.2f, %.2f, %.2f%%", localDate.toString(),
+                        data.open, data.close, growth));
 
-            DayData data = dataByDay.get(localDate.toString());
-            double growth = (data.close - data.open) / data.open * 100;
-            LOGGER.info(String.format("Open, close, growth are: %.2f, %.2f, %.2f%%", data.open, data.close, growth));
-
-            return growth;
+                return growth;
+            }
         }
 
         boolean hasData(LocalDate localDate) {
