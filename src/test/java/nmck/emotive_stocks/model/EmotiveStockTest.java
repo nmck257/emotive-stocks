@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -40,6 +41,10 @@ class EmotiveStockTest {
         emotiveStock = new EmotiveStock(mockNYSE, TICKER);
     }
 
+    @Test
+    void getTicker() {
+        assertEquals(TICKER, emotiveStock.getTicker());
+    }
 
     @Nested
     class ReactTo {

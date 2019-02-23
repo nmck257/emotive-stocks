@@ -35,8 +35,7 @@ public class EmotiveStock {
     }
 
     public String reactTo(LocalDate localDate) {
-        Feeling feeling = assessFeelings(nyse.getDailyGrowth(localDate, ticker));
-        switch (feeling) {
+        switch (assessFeelings(nyse.getDailyGrowth(localDate, ticker))) {
             case GOOD:
                 return getRandomElement(GOOD_FEELINGS);
             case VERY_GOOD:
