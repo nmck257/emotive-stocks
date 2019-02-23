@@ -1,15 +1,25 @@
 package nmck.emotive_stocks;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AppConfig {
+public class LambdaConfig {
+    private LocalDate reactionDate;
     private String ticker;
     private String nyseApiKey;
     private String twitterApiKey;
     private String twitterHandle;
+
+    public LocalDate getReactionDate() {
+        return reactionDate;
+    }
+
+    public void setReactionDate(LocalDate reactionDate) {
+        this.reactionDate = reactionDate;
+    }
 
     public String getTicker() {
         return ticker;

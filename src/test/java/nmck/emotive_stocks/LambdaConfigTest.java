@@ -4,25 +4,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AppConfigTest {
-    private AppConfig appConfig;
+class LambdaConfigTest {
+    private LambdaConfig lambdaConfig;
 
     @Nested
     class GetMissingConfigEntries {
         @BeforeEach
         void setup() {
-            appConfig = new AppConfig();
+            lambdaConfig = new LambdaConfig();
         }
 
         @Test
         void noFieldsSet() {
-            Set<String> entries = appConfig.getMissingConfigEntries();
-            assertEquals(4, entries.size());
+            Set<String> entries = lambdaConfig.getMissingConfigEntries();
+            assertEquals(5, entries.size());
             assertTrue(entries.contains("ticker"), "Result must include ticker");
             assertTrue(entries.contains("nyseApiKey"), "Result must include nyseApiKey");
             assertTrue(entries.contains("twitterApiKey"), "Result must include twitterApiKey");
@@ -31,11 +32,12 @@ class AppConfigTest {
 
         @Test
         void allFieldsSet() {
-            appConfig.setNyseApiKey("dummy");
-            appConfig.setTicker("dummy");
-            appConfig.setTwitterApiKey("dummy");
-            appConfig.setTwitterHandle("dummy");
-            Set<String> entries = appConfig.getMissingConfigEntries();
+            lambdaConfig.setNyseApiKey("dummy");
+            lambdaConfig.setTicker("dummy");
+            lambdaConfig.setTwitterApiKey("dummy");
+            lambdaConfig.setTwitterHandle("dummy");
+            lambdaConfig.setReactionDate(LocalDate.now());
+            Set<String> entries = lambdaConfig.getMissingConfigEntries();
             assertEquals(0, entries.size());
         }
     }

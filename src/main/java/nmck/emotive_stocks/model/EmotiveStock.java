@@ -20,15 +20,15 @@ public class EmotiveStock {
     private final NYSE nyse;
     private final String ticker;
 
-    Set<String> getGoodFeelings() {
+    public Set<String> getGoodFeelings() {
         return new HashSet<>(GOOD_FEELINGS);
     }
 
-    Set<String> getBadFeelings() {
+    public Set<String> getBadFeelings() {
         return new HashSet<>(BAD_FEELINGS);
     }
 
-    Set<String> getNeutralFeelings() {
+    public Set<String> getNeutralFeelings() {
         return new HashSet<>(NEUTRAL_FEELINGS);
     }
 
