@@ -1,4 +1,4 @@
-package nmck.emotive_stocks.services;
+package nmck.emotive_stocks.services.twitter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

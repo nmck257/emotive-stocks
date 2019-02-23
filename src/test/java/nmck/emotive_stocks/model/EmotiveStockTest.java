@@ -1,6 +1,6 @@
 package nmck.emotive_stocks.model;
 
-import nmck.emotive_stocks.services.NYSE;
+import nmck.emotive_stocks.services.nyse.NYSE;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -25,12 +25,12 @@ class EmotiveStockTest {
 
     @BeforeAll
     static void setUpNYSE() {
-        when(mockNYSE.getDailyGrowth(GOOD_DAY, TICKER)).thenReturn(0.8);
-        when(mockNYSE.getDailyGrowth(VERY_GOOD_DAY, TICKER)).thenReturn(1.3);
-        when(mockNYSE.getDailyGrowth(BAD_DAY, TICKER)).thenReturn(-0.8);
-        when(mockNYSE.getDailyGrowth(VERY_BAD_DAY, TICKER)).thenReturn(-1.2);
-        when(mockNYSE.getDailyGrowth(NEUTRAL_DAY, TICKER)).thenReturn(0.2);
-        when(mockNYSE.getDailyGrowth(VERY_NEUTRAL_DAY, TICKER)).thenReturn(0.0);
+        when(mockNYSE.getDailyGrowthPercentage(GOOD_DAY, TICKER)).thenReturn(0.8);
+        when(mockNYSE.getDailyGrowthPercentage(VERY_GOOD_DAY, TICKER)).thenReturn(1.3);
+        when(mockNYSE.getDailyGrowthPercentage(BAD_DAY, TICKER)).thenReturn(-0.8);
+        when(mockNYSE.getDailyGrowthPercentage(VERY_BAD_DAY, TICKER)).thenReturn(-1.2);
+        when(mockNYSE.getDailyGrowthPercentage(NEUTRAL_DAY, TICKER)).thenReturn(0.2);
+        when(mockNYSE.getDailyGrowthPercentage(VERY_NEUTRAL_DAY, TICKER)).thenReturn(0.0);
     }
 
     @BeforeEach

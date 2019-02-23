@@ -1,11 +1,9 @@
 package nmck.emotive_stocks.model;
 
-import nmck.emotive_stocks.services.NYSE;
+import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.util.Utils;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 public class EmotiveStock {
     private static final double NEUTRAL_THRESHOLD = 0.1;
@@ -26,7 +24,7 @@ public class EmotiveStock {
     }
 
     public String reactTo(LocalDate localDate) {
-        return feelingWords.getRandom(assessFeelings(nyse.getDailyGrowth(localDate, ticker)));
+        return feelingWords.getRandom(assessFeelings(nyse.getDailyGrowthPercentage(localDate, ticker)));
     }
 
     private Feeling assessFeelings(double dailyGrowth) {

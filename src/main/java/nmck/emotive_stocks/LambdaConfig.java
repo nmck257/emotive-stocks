@@ -6,7 +6,7 @@ import java.util.Set;
 public class LambdaConfig {
     private LocalDate reactionDate;
     private String ticker;
-    private String nyseApiKey;
+    private String alphaVantageApiKey;
     private String twitterApiKey;
     private String twitterHandle;
     private Set<String> goodFeelingWords;
@@ -29,12 +29,12 @@ public class LambdaConfig {
         this.ticker = ticker;
     }
 
-    public String getNyseApiKey() {
-        return nyseApiKey;
+    public String getAlphaVantageApiKey() {
+        return alphaVantageApiKey;
     }
 
-    public void setNyseApiKey(String nyseApiKey) {
-        this.nyseApiKey = nyseApiKey;
+    public void setAlphaVantageApiKey(String alphaVantageApiKey) {
+        this.alphaVantageApiKey = alphaVantageApiKey;
     }
 
     public String getTwitterApiKey() {

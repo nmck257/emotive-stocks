@@ -2,10 +2,11 @@ package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
 import nmck.emotive_stocks.model.FeelingWords;
-import nmck.emotive_stocks.services.FakeTwitterBot;
-import nmck.emotive_stocks.services.NYSE;
-import nmck.emotive_stocks.services.SimpleRandomNYSE;
-import nmck.emotive_stocks.services.TwitterBot;
+import nmck.emotive_stocks.services.nyse.AlphaVantageNYSE;
+import nmck.emotive_stocks.services.nyse.NYSE;
+import nmck.emotive_stocks.services.nyse.SimpleRandomNYSE;
+import nmck.emotive_stocks.services.twitter.FakeTwitterBot;
+import nmck.emotive_stocks.services.twitter.TwitterBot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,12 +51,13 @@ public class Lambda {
     }
 
     private NYSE initializeNYSE(LambdaConfig lambdaConfig) {
-        String nyseApiKey = lambdaConfig.getNyseApiKey();
-        if (nyseApiKey == null) {
+        String alphaVantageApiKey = lambdaConfig.getAlphaVantageApiKey();
+        if (alphaVantageApiKey == null) {
             LOGGER.info("No nyse api key; using simple random");
             return new SimpleRandomNYSE();
         } else {
-            throw new RuntimeException("Real NYSE not yet implemented");
+            LOGGER.info("Using NYSE data from Alpha Vantage");
+            return new AlphaVantageNYSE(alphaVantageApiKey);
         }
     }
 

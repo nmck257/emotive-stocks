@@ -2,8 +2,8 @@ package nmck.emotive_stocks;
 
 import nmck.emotive_stocks.model.EmotiveStock;
 import nmck.emotive_stocks.model.FeelingWords;
-import nmck.emotive_stocks.services.NYSE;
-import nmck.emotive_stocks.services.TwitterBot;
+import nmck.emotive_stocks.services.nyse.NYSE;
+import nmck.emotive_stocks.services.twitter.TwitterBot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

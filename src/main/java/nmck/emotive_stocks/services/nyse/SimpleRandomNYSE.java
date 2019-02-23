@@ -1,4 +1,4 @@
-package nmck.emotive_stocks.services;
+package nmck.emotive_stocks.services.nyse;
 
 import nmck.emotive_stocks.util.Utils;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +23,7 @@ public class SimpleRandomNYSE implements NYSE {
      * @return 0.0 if not market day; otherwise, a randomly-assigned growth value
      */
     @Override
-    public double getDailyGrowth(LocalDate localDate, String symbol) {
+    public double getDailyGrowthPercentage(LocalDate localDate, String symbol) {
         return stockMemory.check(localDate, symbol);
     }
 
