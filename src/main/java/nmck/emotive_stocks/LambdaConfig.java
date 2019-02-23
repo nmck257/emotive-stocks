@@ -1,6 +1,7 @@
 package nmck.emotive_stocks;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public class LambdaConfig {
     private LocalDate reactionDate;
@@ -8,6 +9,9 @@ public class LambdaConfig {
     private String nyseApiKey;
     private String twitterApiKey;
     private String twitterHandle;
+    private Set<String> goodFeelingWords;
+    private Set<String> badFeelingWords;
+    private Set<String> neutralFeelingWords;
 
     public LocalDate getReactionDate() {
         return reactionDate;
@@ -47,5 +51,29 @@ public class LambdaConfig {
 
     public void setTwitterHandle(String twitterHandle) {
         this.twitterHandle = twitterHandle;
+    }
+
+    public Set<String> getGoodFeelingWords() {
+        return goodFeelingWords;
+    }
+
+    public void setGoodFeelingWords(Set<String> goodFeelingWords) {
+        this.goodFeelingWords = goodFeelingWords;
+    }
+
+    public Set<String> getBadFeelingWords() {
+        return badFeelingWords;
+    }
+
+    public void setBadFeelingWords(Set<String> badFeelingWords) {
+        this.badFeelingWords = badFeelingWords;
+    }
+
+    public Set<String> getNeutralFeelingWords() {
+        return neutralFeelingWords;
+    }
+
+    public void setNeutralFeelingWords(Set<String> neutralFeelingWords) {
+        this.neutralFeelingWords = neutralFeelingWords;
     }
 }

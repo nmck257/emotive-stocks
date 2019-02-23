@@ -21,12 +21,6 @@ public class EmotiveStock {
         this.feelingWords = feelingWords;
     }
 
-    public EmotiveStock(NYSE nyse, String ticker) {
-        this.nyse = nyse;
-        this.ticker = ticker;
-        this.feelingWords = FeelingWords.getDefault();
-    }
-
     public String getTicker() {
         return ticker;
     }

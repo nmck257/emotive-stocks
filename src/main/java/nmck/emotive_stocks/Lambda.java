@@ -1,6 +1,7 @@
 package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
+import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.FakeTwitterBot;
 import nmck.emotive_stocks.services.NYSE;
 import nmck.emotive_stocks.services.SimpleRandomNYSE;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 public class Lambda {
     private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
@@ -23,7 +25,18 @@ public class Lambda {
         TwitterBot twitterBot = initializeTwitterBot(lambdaConfig);
 
         Controller controller = new Controller(nyse, twitterBot);
+        controller.setFeelingWords(getFeelingWords(lambdaConfig));
         controller.reactTo(ticker, reactionDate);
+    }
+
+    private FeelingWords getFeelingWords(LambdaConfig lambdaConfig) {
+        Set<String> good = Optional.ofNullable(lambdaConfig.getGoodFeelingWords())
+                .orElse(FeelingWords.getDefaultGoodFeelings());
+        Set<String> bad = Optional.ofNullable(lambdaConfig.getBadFeelingWords())
+                .orElse(FeelingWords.getDefaultBadFeelings());
+        Set<String> neutral = Optional.ofNullable(lambdaConfig.getNeutralFeelingWords())
+                .orElse(FeelingWords.getDefaultNeutralFeelings());
+        return new FeelingWords(good, bad, neutral);
     }
 
     private TwitterBot initializeTwitterBot(LambdaConfig lambdaConfig) {

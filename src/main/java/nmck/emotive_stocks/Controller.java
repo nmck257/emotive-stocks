@@ -1,6 +1,7 @@
 package nmck.emotive_stocks;
 
 import nmck.emotive_stocks.model.EmotiveStock;
+import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.NYSE;
 import nmck.emotive_stocks.services.TwitterBot;
 import org.apache.logging.log4j.LogManager;
@@ -14,17 +15,26 @@ public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
     private final NYSE nyse;
     private final TwitterBot twitterBot;
+    private FeelingWords feelingWords = FeelingWords.getDefault();
 
     public Controller(@Nonnull NYSE nyse, @Nonnull TwitterBot twitterBot) {
         this.nyse = nyse;
         this.twitterBot = twitterBot;
     }
 
+    public FeelingWords getFeelingWords() {
+        return feelingWords;
+    }
+
+    public void setFeelingWords(FeelingWords feelingWords) {
+        this.feelingWords = feelingWords;
+    }
+
     @Nullable
     public String reactTo(String ticker, LocalDate reactionDate) {
         requireTickerIsValid(ticker, nyse);
         if (nyse.isMarketDay(reactionDate)) {
-            EmotiveStock emotiveStock = new EmotiveStock(nyse, ticker);
+            EmotiveStock emotiveStock = new EmotiveStock(nyse, ticker, feelingWords);
 
             String reaction = emotiveStock.reactTo(reactionDate);
             twitterBot.tweet(reaction);

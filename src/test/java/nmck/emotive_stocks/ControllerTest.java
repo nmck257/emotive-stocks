@@ -1,6 +1,8 @@
 package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
+import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.FakeTwitterBot;
 import nmck.emotive_stocks.services.NYSE;
 import nmck.emotive_stocks.services.SimpleRandomNYSE;
@@ -37,5 +39,17 @@ class ControllerTest {
         assertThrows(RuntimeException.class, () -> controller.reactTo(BAD_TICKER, LocalDate.now()));
     }
 
+    @Test
+    void getSetFeelingWords() {
+        FeelingWords feelingWords = new FeelingWords(Sets.newHashSet("a"),
+                Sets.newHashSet("a"), Sets.newHashSet("a"));
+        controller.setFeelingWords(feelingWords);
+        assertEquals(feelingWords, controller.getFeelingWords());
+    }
+
+    @Test
+    void defaultFeelingWordsByDefault() {
+        assertEquals(FeelingWords.getDefault(), controller.getFeelingWords());
+    }
 }
 
