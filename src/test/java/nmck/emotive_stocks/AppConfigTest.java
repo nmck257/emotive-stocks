@@ -13,7 +13,7 @@ class AppConfigTest {
     private AppConfig appConfig;
 
     @Nested
-    class getMissingConfigEntries {
+    class GetMissingConfigEntries {
         @BeforeEach
         void setup() {
             appConfig = new AppConfig();

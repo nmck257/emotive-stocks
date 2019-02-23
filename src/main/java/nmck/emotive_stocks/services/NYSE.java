@@ -1,8 +1,8 @@
 package nmck.emotive_stocks.services;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface NYSE {
-    String getDailyGrowth(Date date, String symbol);
-    boolean isMarketDay(Date date);
+    float getDailyGrowth(LocalDate localDate, String symbol);
+    boolean isMarketDay(LocalDate localDate);
 }
