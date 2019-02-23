@@ -13,7 +13,7 @@ import java.util.Map;
 public class SimpleRandomNYSE implements NYSE {
     private static final Logger LOGGER = LogManager.getLogger(SimpleRandomNYSE.class);
     private static final double BIGGEST_GROWTH = 5.0;
-    private StockMemory stockMemory = new StockMemory();
+    private final StockMemory stockMemory = new StockMemory();
 
     /**
      * Will remember and reuse previously-returned values for specific dates and symbols
@@ -47,9 +47,9 @@ public class SimpleRandomNYSE implements NYSE {
     }
 
     private class StockMemory {
-        private Map<LocalDate, Map<String, Double>> memory = new HashMap<>();
+        private final Map<LocalDate, Map<String, Double>> memory = new HashMap<>();
 
-        public double check(LocalDate localDate, String symbol) {
+        double check(LocalDate localDate, String symbol) {
             if (!isMarketDay(localDate)) return 0.0;
             if (!memory.containsKey(localDate)) {
                 memory.put(localDate, new HashMap<>());

@@ -1,7 +1,6 @@
 package nmck.emotive_stocks.model;
 
 import nmck.emotive_stocks.services.NYSE;
-import nmck.emotive_stocks.util.Utils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -10,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class EmotiveStockTest {
     private static final NYSE mockNYSE = mock(NYSE.class);
@@ -22,7 +19,8 @@ class EmotiveStockTest {
     private static final LocalDate VERY_BAD_DAY = LocalDate.of(2005, 2, 22);
     private static final LocalDate NEUTRAL_DAY = LocalDate.of(1930, 4, 18);
     private static final LocalDate VERY_NEUTRAL_DAY = LocalDate.of(1954, 4, 11);
-    private static final String TICKER = "cash-money";
+    private static final String TICKER = "cash";
+    private static final FeelingWords feelingWords = spy(FeelingWords.getDefault());
     private EmotiveStock emotiveStock;
 
     @BeforeAll
@@ -37,7 +35,7 @@ class EmotiveStockTest {
 
     @BeforeEach
     void setUpEmotiveStock() {
-        emotiveStock = new EmotiveStock(mockNYSE, TICKER);
+        emotiveStock = new EmotiveStock(mockNYSE, TICKER, feelingWords);
     }
 
     @Test
@@ -47,75 +45,41 @@ class EmotiveStockTest {
 
     @Nested
     class ReactTo {
-        private int RUN_COUNT = 100;
-        private String reaction;
-
-        private void assertAllCaps(String reaction) {
-            assertTrue(reaction.matches("[^a-z]+"), String.format("Reaction must be all-caps: %s", reaction));
-        }
-
-        private void assertMixedCase(String reaction) {
-            assertTrue(reaction.matches(".*[a-z]+.*"), String.format("Reaction must be mixed case: %s", reaction));
-        }
 
         @Test
         void goodDay() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = emotiveStock.reactTo(GOOD_DAY);
-                assertMixedCase(reaction);
-                assertTrue(Utils.containsCaseInsensitive(emotiveStock.getGoodFeelings(), reaction),
-                        String.format("Reaction must be from good list: %s", reaction));
-            }
+            emotiveStock.reactTo(GOOD_DAY);
+            verify(feelingWords).getRandom(Feeling.GOOD);
         }
 
         @Test
         void veryGoodDay() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = emotiveStock.reactTo(VERY_GOOD_DAY);
-                assertAllCaps(reaction);
-                assertTrue(Utils.containsCaseInsensitive(emotiveStock.getGoodFeelings(), reaction),
-                        String.format("Reaction must be from good list: %s", reaction));
-            }
+            emotiveStock.reactTo(VERY_GOOD_DAY);
+            verify(feelingWords).getRandom(Feeling.VERY_GOOD);
         }
 
         @Test
         void badDay() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = emotiveStock.reactTo(BAD_DAY);
-                assertMixedCase(reaction);
-                assertTrue(Utils.containsCaseInsensitive(emotiveStock.getBadFeelings(), reaction),
-                        String.format("Reaction must be from bad list: %s", reaction));
-            }
+            emotiveStock.reactTo(BAD_DAY);
+            verify(feelingWords).getRandom(Feeling.BAD);
         }
 
         @Test
         void veryBadDay() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = emotiveStock.reactTo(VERY_BAD_DAY);
-                assertAllCaps(reaction);
-                assertTrue(Utils.containsCaseInsensitive(emotiveStock.getBadFeelings(), reaction),
-                        String.format("Reaction must be from bad list: %s", reaction));
-            }
+            emotiveStock.reactTo(VERY_BAD_DAY);
+            verify(feelingWords).getRandom(Feeling.VERY_BAD);
         }
 
         @Test
         void neutralDay() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = emotiveStock.reactTo(NEUTRAL_DAY);
-                assertMixedCase(reaction);
-                assertTrue(Utils.containsCaseInsensitive(emotiveStock.getNeutralFeelings(), reaction),
-                        String.format("Reaction must be from neutral list: %s", reaction));
-            }
+            emotiveStock.reactTo(NEUTRAL_DAY);
+            verify(feelingWords).getRandom(Feeling.NEUTRAL);
         }
 
         @Test
         void veryNeutralDay() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = emotiveStock.reactTo(VERY_NEUTRAL_DAY);
-                assertAllCaps(reaction);
-                assertTrue(Utils.containsCaseInsensitive(emotiveStock.getNeutralFeelings(), reaction),
-                        String.format("Reaction must be from neutral list: %s", reaction));
-            }
+            emotiveStock.reactTo(VERY_NEUTRAL_DAY);
+            verify(feelingWords).getRandom(Feeling.VERY_NEUTRAL);
         }
     }
 }

@@ -12,8 +12,8 @@ import java.time.LocalDate;
 
 public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
-    private NYSE nyse;
-    private TwitterBot twitterBot;
+    private final NYSE nyse;
+    private final TwitterBot twitterBot;
 
     public Controller(@Nonnull NYSE nyse, @Nonnull TwitterBot twitterBot) {
         this.nyse = nyse;

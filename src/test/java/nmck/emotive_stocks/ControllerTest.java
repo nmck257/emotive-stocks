@@ -1,13 +1,10 @@
 package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
-import nmck.emotive_stocks.model.EmotiveStock;
 import nmck.emotive_stocks.services.FakeTwitterBot;
 import nmck.emotive_stocks.services.NYSE;
 import nmck.emotive_stocks.services.SimpleRandomNYSE;
 import nmck.emotive_stocks.services.TwitterBot;
-import nmck.emotive_stocks.util.Utils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -16,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
     private static final String TICKER = "cash";
-    private static final String BAD_TICKER = "rjsdngfvernstjih34985y4378y54378 5";
+    private static final String BAD_TICKER = "long junk value !@#";
     private final static LocalDate A_WEDNESDAY = LocalDate.of(2019, 2, 20);
     private final static LocalDate A_SUNDAY = LocalDate.of(2019, 2, 24);
     private final NYSE nyse = new SimpleRandomNYSE();
