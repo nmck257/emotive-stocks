@@ -10,7 +10,7 @@ import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LambdaTest {
-    private static final String TICKER = "cash";
+    private static final String TICKER = "CASH";
     private Lambda lambda;
     private LambdaConfig lambdaConfig;
 

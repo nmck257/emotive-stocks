@@ -10,9 +10,12 @@ import java.util.Objects;
 import java.util.Set;
 
 public class FeelingWords {
-    private static final Set<String> DEFAULT_GOOD_FEELINGS = Sets.newHashSet("yay", "nice", "oh baby", "wow", "yeehaw", "mmm");
-    private static final Set<String> DEFAULT_BAD_FEELINGS = Sets.newHashSet("wait", "no", "bad", "stop", "um");
-    private static final Set<String> DEFAULT_NEUTRAL_FEELINGS = Sets.newHashSet("meh", "zzz", "whatever");
+    private static final Set<String> DEFAULT_GOOD_FEELINGS = Sets.newHashSet(
+            "yay", "nice", "oh baby", "wow", "yeehaw", "mmm", "yeah buddy", "hot dog", "yas");
+    private static final Set<String> DEFAULT_BAD_FEELINGS = Sets.newHashSet(
+            "wait", "no", "bad", "stop", "um", "hold the phone", "oof", "ow");
+    private static final Set<String> DEFAULT_NEUTRAL_FEELINGS = Sets.newHashSet(
+            "meh", "zzz", "whatever", "i sleep");
     private final Set<String> good;
     private final Set<String> bad;
     private final Set<String> neutral;

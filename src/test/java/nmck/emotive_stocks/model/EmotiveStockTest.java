@@ -19,7 +19,7 @@ class EmotiveStockTest {
     private static final LocalDate VERY_BAD_DAY = LocalDate.of(2005, 2, 22);
     private static final LocalDate NEUTRAL_DAY = LocalDate.of(1930, 4, 18);
     private static final LocalDate VERY_NEUTRAL_DAY = LocalDate.of(1954, 4, 11);
-    private static final String TICKER = "cash";
+    private static final String TICKER = "CASH";
     private static final FeelingWords feelingWords = spy(FeelingWords.getDefault());
     private EmotiveStock emotiveStock;
 

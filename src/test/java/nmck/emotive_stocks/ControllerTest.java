@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
-    private static final String TICKER = "cash";
+    private static final String TICKER = "CASH";
     private static final String BAD_TICKER = "long junk value !@#";
     private final static LocalDate A_WEDNESDAY = LocalDate.of(2019, 2, 20);
     private final static LocalDate A_SUNDAY = LocalDate.of(2019, 2, 24);

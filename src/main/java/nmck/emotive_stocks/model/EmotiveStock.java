@@ -2,10 +2,14 @@ package nmck.emotive_stocks.model;
 
 import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.util.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 
 public class EmotiveStock {
+    private static final Logger LOGGER = LogManager.getLogger(EmotiveStock.class);
+    // TODO expose feeling thresholds for config
     private static final double NEUTRAL_THRESHOLD = 0.1;
     private static final double GOOD_THRESHOLD = 0.5;
     private static final double VERY_GOOD_THRESHOLD = 1.0;
@@ -24,7 +28,12 @@ public class EmotiveStock {
     }
 
     public String reactTo(LocalDate localDate) {
-        return feelingWords.getRandom(assessFeelings(nyse.getDailyGrowthPercentage(localDate, ticker)));
+        double growth = nyse.getDailyGrowthPercentage(localDate, ticker);
+        Feeling feeling = assessFeelings(growth);
+        String reaction = feelingWords.getRandom(feeling);
+        LOGGER.info(String.format("Symbol %s feels %s about growth of %.2f and says \"%s\"",
+                ticker, feeling, growth, reaction));
+        return reaction;
     }
 
     private Feeling assessFeelings(double dailyGrowth) {

@@ -17,6 +17,7 @@ import java.util.Set;
 public class Lambda {
     private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
 
+    // TODO set up aws lambda
     public void handle(LambdaConfig lambdaConfig) {
         LOGGER.info("Starting handler");
 
@@ -46,6 +47,7 @@ public class Lambda {
             LOGGER.info("No twitter api key; using fake");
             return new FakeTwitterBot();
         } else {
+            // TODO implement twitter
             throw new RuntimeException("Real twitter not yet implemented");
         }
     }
