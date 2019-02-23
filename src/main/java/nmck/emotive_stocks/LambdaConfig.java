@@ -1,10 +1,6 @@
 package nmck.emotive_stocks;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class LambdaConfig {
     private LocalDate reactionDate;
@@ -51,21 +47,5 @@ public class LambdaConfig {
 
     public void setTwitterHandle(String twitterHandle) {
         this.twitterHandle = twitterHandle;
-    }
-
-    public Set<String> getMissingConfigEntries() {
-        return getNullFieldList();
-    }
-
-    private Set<String> getNullFieldList() {
-        return Arrays.stream(this.getClass().getDeclaredFields())
-                .filter(field -> {
-                    try {
-                        return field.get(this) == null;
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                        throw new RuntimeException("Exception using reflection to check fields");
-                    }
-                }).map(Field::getName).collect(Collectors.toSet());
     }
 }
