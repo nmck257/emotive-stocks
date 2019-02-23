@@ -1,17 +1,17 @@
 package nmck.emotive_stocks;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import nmck.emotive_stocks.model.EmotiveStock;
 import nmck.emotive_stocks.services.NYSE;
 import nmck.emotive_stocks.services.TwitterBot;
-
-import java.util.Date;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Lambda {
+    private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
+
     public void myHandler(AppConfig appConfig, Context context) {
-        LambdaLogger logger = context.getLogger();
-        logger.log("woohoo");
+        LOGGER.info("woohoo");
         NYSE nyse;
         EmotiveStock emotiveStock;
         TwitterBot twitterBot;
