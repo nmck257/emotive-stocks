@@ -77,11 +77,13 @@ public class AlphaVantageNYSE implements NYSE{
         }
     }
 
+    @SuppressWarnings("unused")
     private class Response {
         @SerializedName("Error Message")
         String errorMessage;
         @SerializedName("Meta Data")
         Metadata metadata;
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         @SerializedName("Time Series (Daily)")
         Map<String, DayData> dataByDay;
 
