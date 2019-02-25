@@ -43,6 +43,7 @@ public class AlphaVantageNYSE implements NYSE{
     }
 
     private Response sendRequest(String symbol){
+        // TODO add response caching
         LOGGER.info("Requesting stock data for symbol: " + symbol);
         try {
             URL url = formURL(symbol);

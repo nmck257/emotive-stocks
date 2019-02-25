@@ -17,7 +17,6 @@ import java.util.Set;
 public class Lambda {
     private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
 
-    // TODO set up aws lambda
     public void handle(LambdaConfig lambdaConfig) {
         LOGGER.info("Starting handler");
 
