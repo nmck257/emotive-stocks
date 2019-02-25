@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public class LambdaConfig {
-    private LocalDate reactionDate;
+    private String reactionDate;
     private String ticker;
     private String alphaVantageApiKey;
     private String twitterApiKey;
@@ -14,10 +14,10 @@ public class LambdaConfig {
     private Set<String> neutralFeelingWords;
 
     public LocalDate getReactionDate() {
-        return reactionDate;
+        return reactionDate == null ? null : LocalDate.parse(reactionDate);
     }
 
-    public void setReactionDate(LocalDate reactionDate) {
+    public void setReactionDate(String reactionDate) {
         this.reactionDate = reactionDate;
     }
 
