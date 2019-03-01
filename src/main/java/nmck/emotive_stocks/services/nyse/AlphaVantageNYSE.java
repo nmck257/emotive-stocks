@@ -1,5 +1,8 @@
 package nmck.emotive_stocks.services.nyse;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import nmck.emotive_stocks.util.Utils;
@@ -13,10 +16,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
-public class AlphaVantageNYSE implements NYSE{
+public class AlphaVantageNYSE implements NYSE {
     private static final Logger LOGGER = LogManager.getLogger(AlphaVantageNYSE.class);
     private static final String DEFAULT_SYMBOL = "MSFT";
+    private LoadingCache<String, Response> apiResponseCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.MINUTES)
+            .build(CacheLoader.from(this::sendRequest));
     private String apiKey = "demo";
 
     AlphaVantageNYSE() { }
@@ -27,24 +35,41 @@ public class AlphaVantageNYSE implements NYSE{
 
     @Override
     public double getDailyGrowthPercentage(LocalDate localDate, String symbol) {
-        Response response = sendRequest(symbol);
+        Response response;
+        try {
+            response = apiResponseCache.get(symbol);
+        } catch (ExecutionException e) {
+            LOGGER.error("Concurrency exception with api response cache", e);
+            throw new RuntimeException(e);
+        }
         return response.getGrowthPercentage(localDate);
     }
 
     @Override
     public boolean isMarketDay(LocalDate localDate) {
-        Response response = sendRequest(DEFAULT_SYMBOL);
+        Response response;
+        try {
+            response = apiResponseCache.get(DEFAULT_SYMBOL);
+        } catch (ExecutionException e) {
+            LOGGER.error("Concurrency exception with api response cache", e);
+            throw new RuntimeException(e);
+        }
         return response.hasData(localDate);
     }
 
     @Override
     public boolean isValidSymbol(String symbol) {
-        Response response = sendRequest(symbol);
+        Response response;
+        try {
+            response = apiResponseCache.get(symbol);
+        } catch (ExecutionException e) {
+            LOGGER.error("Concurrency exception with api response cache", e);
+            throw new RuntimeException(e);
+        }
         return !response.isError();
     }
 
     private Response sendRequest(String symbol){
-        // TODO add response caching
         LOGGER.info("Requesting stock data for symbol: " + symbol);
         try {
             URL url = formURL(symbol);
