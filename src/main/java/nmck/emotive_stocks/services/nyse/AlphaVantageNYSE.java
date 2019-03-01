@@ -2,6 +2,7 @@ package nmck.emotive_stocks.services.nyse;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import nmck.emotive_stocks.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class AlphaVantageNYSE implements NYSE{
     private static final Logger LOGGER = LogManager.getLogger(AlphaVantageNYSE.class);
@@ -86,7 +87,7 @@ public class AlphaVantageNYSE implements NYSE{
         Metadata metadata;
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         @SerializedName("Time Series (Daily)")
-        Map<String, DayData> dataByDay;
+        LinkedHashMap<String, DayData> dataByDay;
 
         class Metadata {
             @SerializedName("1. Information")
@@ -113,20 +114,25 @@ public class AlphaVantageNYSE implements NYSE{
             @SerializedName("5. volume")
             double volume;
         }
-
+        
         double getGrowthPercentage(LocalDate localDate) {
             if (isError()) throw new IllegalStateException("Cannot get data from error response");
             if (!hasData(localDate)) {
                 LOGGER.info(String.format("%s No data, no growth", localDate.toString()));
                 return 0.0;
             } else {
-                DayData data = dataByDay.get(localDate.toString());
-                double growth = (data.close - data.open) / data.open * 100;
-                LOGGER.info(String.format("%s Open, close, growth are: %.2f, %.2f, %.2f%%", localDate.toString(),
-                        data.open, data.close, growth));
-
-                return growth;
+                double before = previousClose(localDate);
+                double after = dataByDay.get(localDate.toString()).close;
+                double growthPercentage = (after - before) / before * 100;
+                LOGGER.info(String.format("%s yesterday close, today close, growth are: %.2f, %.2f, %.2f%%", localDate.toString(),
+                        before, after, growthPercentage));
+                return growthPercentage;
             }
+        }
+
+        private double previousClose(LocalDate localDate) {
+            String previousDate = Utils.getNextKey(dataByDay, localDate.toString());
+            return dataByDay.get(previousDate).close;
         }
 
         boolean hasData(LocalDate localDate) {
