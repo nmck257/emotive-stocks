@@ -34,7 +34,7 @@ public class EmotiveStock {
         String reaction = feelingWords.getRandom(feeling);
         LOGGER.info(String.format("Symbol %s feels %s about growth of %.2f%% and says \"%s\"",
                 ticker, feeling, growth, reaction));
-        return reaction;
+        return String.format("%s (%.2f%%)", reaction, growth);
     }
 
     private Feeling assessFeelings(double dailyGrowth) {

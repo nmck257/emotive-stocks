@@ -5,10 +5,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import sun.util.resources.es.CurrencyNames_es_UY;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class EmotiveStockTest {
@@ -19,18 +22,25 @@ class EmotiveStockTest {
     private static final LocalDate VERY_BAD_DAY = LocalDate.of(2005, 2, 22);
     private static final LocalDate NEUTRAL_DAY = LocalDate.of(1930, 4, 18);
     private static final LocalDate VERY_NEUTRAL_DAY = LocalDate.of(1954, 4, 11);
+    private static final double GOOD_GROWTH = 0.8;
+    private static final double VERY_GOOD_GROWTH = 1.3;
+    private static final double BAD_GROWTH = -0.8;
+    private static final double VERY_BAD_GROWTH = -1.2;
+    private static final double NEUTRAL_GROWTH = 0.2;
+    private static final double VERY_NEUTRAL_GROWTH = 0.0;
+
     private static final String TICKER = "CASH";
     private static final FeelingWords feelingWords = spy(FeelingWords.getDefault());
     private EmotiveStock emotiveStock;
 
     @BeforeAll
     static void setUpNYSE() {
-        when(mockNYSE.getDailyGrowthPercentage(GOOD_DAY, TICKER)).thenReturn(0.8);
-        when(mockNYSE.getDailyGrowthPercentage(VERY_GOOD_DAY, TICKER)).thenReturn(1.3);
-        when(mockNYSE.getDailyGrowthPercentage(BAD_DAY, TICKER)).thenReturn(-0.8);
-        when(mockNYSE.getDailyGrowthPercentage(VERY_BAD_DAY, TICKER)).thenReturn(-1.2);
-        when(mockNYSE.getDailyGrowthPercentage(NEUTRAL_DAY, TICKER)).thenReturn(0.2);
-        when(mockNYSE.getDailyGrowthPercentage(VERY_NEUTRAL_DAY, TICKER)).thenReturn(0.0);
+        when(mockNYSE.getDailyGrowthPercentage(GOOD_DAY, TICKER)).thenReturn(GOOD_GROWTH);
+        when(mockNYSE.getDailyGrowthPercentage(VERY_GOOD_DAY, TICKER)).thenReturn(VERY_GOOD_GROWTH);
+        when(mockNYSE.getDailyGrowthPercentage(BAD_DAY, TICKER)).thenReturn(BAD_GROWTH);
+        when(mockNYSE.getDailyGrowthPercentage(VERY_BAD_DAY, TICKER)).thenReturn(VERY_BAD_GROWTH);
+        when(mockNYSE.getDailyGrowthPercentage(NEUTRAL_DAY, TICKER)).thenReturn(NEUTRAL_GROWTH);
+        when(mockNYSE.getDailyGrowthPercentage(VERY_NEUTRAL_DAY, TICKER)).thenReturn(VERY_NEUTRAL_GROWTH);
     }
 
     @BeforeEach
@@ -45,41 +55,46 @@ class EmotiveStockTest {
 
     @Nested
     class ReactTo {
+        final static String reactionPattern = ".* \\(-?\\d+\\.\\d{2}%\\)";
+        String reaction;
+
+        private void dayTest(LocalDate day, Feeling feeling, double growth) {
+            reaction = emotiveStock.reactTo(day);
+            verify(feelingWords).getRandom(feeling);
+            assertTrue(reaction.matches(reactionPattern),
+                    String.format("Reaction \"%s\" must look like \"words (-0.00%%)\"", reaction));
+            assertTrue(reaction.contains(String.valueOf(growth)),
+                    String.format("Reaction %s must contain growth %.2f", reaction, growth));
+        }
 
         @Test
         void goodDay() {
-            emotiveStock.reactTo(GOOD_DAY);
-            verify(feelingWords).getRandom(Feeling.GOOD);
+            dayTest(GOOD_DAY, Feeling.GOOD, GOOD_GROWTH);
         }
 
         @Test
         void veryGoodDay() {
-            emotiveStock.reactTo(VERY_GOOD_DAY);
-            verify(feelingWords).getRandom(Feeling.VERY_GOOD);
+            dayTest(VERY_GOOD_DAY, Feeling.VERY_GOOD, VERY_GOOD_GROWTH);
         }
 
         @Test
         void badDay() {
-            emotiveStock.reactTo(BAD_DAY);
-            verify(feelingWords).getRandom(Feeling.BAD);
+            dayTest(BAD_DAY, Feeling.BAD, BAD_GROWTH);
         }
 
         @Test
         void veryBadDay() {
-            emotiveStock.reactTo(VERY_BAD_DAY);
-            verify(feelingWords).getRandom(Feeling.VERY_BAD);
+            dayTest(VERY_BAD_DAY, Feeling.VERY_BAD, VERY_BAD_GROWTH);
         }
 
         @Test
         void neutralDay() {
-            emotiveStock.reactTo(NEUTRAL_DAY);
-            verify(feelingWords).getRandom(Feeling.NEUTRAL);
+            dayTest(NEUTRAL_DAY, Feeling.NEUTRAL, NEUTRAL_GROWTH);
         }
 
         @Test
         void veryNeutralDay() {
-            emotiveStock.reactTo(VERY_NEUTRAL_DAY);
-            verify(feelingWords).getRandom(Feeling.VERY_NEUTRAL);
+            dayTest(VERY_NEUTRAL_DAY, Feeling.VERY_NEUTRAL, VERY_NEUTRAL_GROWTH);
         }
     }
 }

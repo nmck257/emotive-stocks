@@ -114,7 +114,7 @@ public class AlphaVantageNYSE implements NYSE{
             @SerializedName("5. volume")
             double volume;
         }
-        
+
         double getGrowthPercentage(LocalDate localDate) {
             if (isError()) throw new IllegalStateException("Cannot get data from error response");
             if (!hasData(localDate)) {
