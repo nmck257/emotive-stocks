@@ -1,6 +1,7 @@
 package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
+import nmck.emotive_stocks.model.FeelingThresholds;
 import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.nyse.AlphaVantageNYSE;
 import nmck.emotive_stocks.services.nyse.NYSE;
@@ -27,7 +28,16 @@ public class Lambda {
 
         Controller controller = new Controller(nyse, twitterBot);
         controller.setFeelingWords(getFeelingWords(lambdaConfig));
+        controller.setFeelingThresholds(getFeelingThresholds(lambdaConfig));
         controller.reactTo(ticker, reactionDate);
+    }
+
+    private FeelingThresholds getFeelingThresholds(LambdaConfig lambdaConfig) {
+        FeelingThresholds.Builder builder = FeelingThresholds.newBuilder();
+        if (lambdaConfig.getNeutralThreshold() != null) builder.setNeutralThreshold(lambdaConfig.getNeutralThreshold());
+        if (lambdaConfig.getGoodThreshold() != null) builder.setGoodThreshold(lambdaConfig.getGoodThreshold());
+        if (lambdaConfig.getVeryGoodThreshold() != null) builder.setVeryGoodThreshold(lambdaConfig.getVeryGoodThreshold());
+        return builder.build();
     }
 
     private FeelingWords getFeelingWords(LambdaConfig lambdaConfig) {

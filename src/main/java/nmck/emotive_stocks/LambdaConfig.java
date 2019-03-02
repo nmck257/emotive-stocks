@@ -12,6 +12,9 @@ public class LambdaConfig {
     private Set<String> goodFeelingWords;
     private Set<String> badFeelingWords;
     private Set<String> neutralFeelingWords;
+    private Double neutralThreshold;
+    private Double goodThreshold;
+    private Double veryGoodThreshold;
 
     public LocalDate getReactionDate() {
         return reactionDate == null ? null : LocalDate.parse(reactionDate);
@@ -75,5 +78,29 @@ public class LambdaConfig {
 
     public void setNeutralFeelingWords(Set<String> neutralFeelingWords) {
         this.neutralFeelingWords = neutralFeelingWords;
+    }
+
+    public Double getNeutralThreshold() {
+        return neutralThreshold;
+    }
+
+    public void setNeutralThreshold(double neutralThreshold) {
+        this.neutralThreshold = neutralThreshold;
+    }
+
+    public Double getGoodThreshold() {
+        return goodThreshold;
+    }
+
+    public void setGoodThreshold(double goodThreshold) {
+        this.goodThreshold = goodThreshold;
+    }
+
+    public Double getVeryGoodThreshold() {
+        return veryGoodThreshold;
+    }
+
+    public void setVeryGoodThreshold(double veryGoodThreshold) {
+        this.veryGoodThreshold = veryGoodThreshold;
     }
 }

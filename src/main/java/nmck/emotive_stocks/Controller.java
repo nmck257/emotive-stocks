@@ -1,6 +1,7 @@
 package nmck.emotive_stocks;
 
 import nmck.emotive_stocks.model.EmotiveStock;
+import nmck.emotive_stocks.model.FeelingThresholds;
 import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.services.twitter.TwitterBot;
@@ -16,6 +17,7 @@ public class Controller {
     private final NYSE nyse;
     private final TwitterBot twitterBot;
     private FeelingWords feelingWords = FeelingWords.getDefault();
+    private FeelingThresholds feelingThresholds = FeelingThresholds.getDefault();
 
     public Controller(@Nonnull NYSE nyse, @Nonnull TwitterBot twitterBot) {
         this.nyse = nyse;
@@ -30,11 +32,19 @@ public class Controller {
         this.feelingWords = feelingWords;
     }
 
+    public FeelingThresholds getFeelingThresholds() {
+        return feelingThresholds;
+    }
+
+    public void setFeelingThresholds(FeelingThresholds feelingThresholds) {
+        this.feelingThresholds = feelingThresholds;
+    }
+
     @Nullable
     public String reactTo(String ticker, LocalDate reactionDate) {
         requireTickerIsValid(ticker, nyse);
         if (nyse.isMarketDay(reactionDate)) {
-            EmotiveStock emotiveStock = new EmotiveStock(nyse, ticker, feelingWords);
+            EmotiveStock emotiveStock = new EmotiveStock(nyse, ticker, feelingWords, feelingThresholds);
 
             String reaction = emotiveStock.reactTo(reactionDate);
             twitterBot.tweet(reaction);

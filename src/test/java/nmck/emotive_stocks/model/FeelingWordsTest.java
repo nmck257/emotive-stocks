@@ -2,6 +2,7 @@ package nmck.emotive_stocks.model;
 
 import nmck.emotive_stocks.util.Utils;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
 
@@ -56,64 +57,52 @@ class FeelingWordsTest {
             assertTrue(reaction.matches(".*[a-z]+.*"), String.format("Reaction must be mixed case: %s", reaction));
         }
 
-        @Test
+        @RepeatedTest(RUN_COUNT)
         void goodFeelings() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = defaultFeelingWords.getRandom(GOOD);
-                assertMixedCase(reaction);
-                assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getGoodSet(), reaction),
-                        String.format("Reaction must be from good list: %s", reaction));
-            }
+            reaction = defaultFeelingWords.getRandom(GOOD);
+            assertMixedCase(reaction);
+            assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getGoodSet(), reaction),
+                    String.format("Reaction must be from good list: %s", reaction));
         }
 
-        @Test
+        @RepeatedTest(RUN_COUNT)
         void veryGoodFeelings() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = defaultFeelingWords.getRandom(VERY_GOOD);
-                assertAllCaps(reaction);
-                assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getGoodSet(), reaction),
-                        String.format("Reaction must be from good list: %s", reaction));
-            }
+            reaction = defaultFeelingWords.getRandom(VERY_GOOD);
+            assertAllCaps(reaction);
+            assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getGoodSet(), reaction),
+                    String.format("Reaction must be from good list: %s", reaction));
         }
 
-        @Test
+        @RepeatedTest(RUN_COUNT)
         void badFeelings() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = defaultFeelingWords.getRandom(BAD);
-                assertMixedCase(reaction);
-                assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getBadSet(), reaction),
-                        String.format("Reaction must be from bad list: %s", reaction));
-            }
+            reaction = defaultFeelingWords.getRandom(BAD);
+            assertMixedCase(reaction);
+            assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getBadSet(), reaction),
+                    String.format("Reaction must be from bad list: %s", reaction));
         }
 
-        @Test
+        @RepeatedTest(RUN_COUNT)
         void veryBadFeelings() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = defaultFeelingWords.getRandom(VERY_BAD);
-                assertAllCaps(reaction);
-                assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getBadSet(), reaction),
-                        String.format("Reaction must be from bad list: %s", reaction));
-            }
+            reaction = defaultFeelingWords.getRandom(VERY_BAD);
+            assertAllCaps(reaction);
+            assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getBadSet(), reaction),
+                    String.format("Reaction must be from bad list: %s", reaction));
         }
 
-        @Test
+        @RepeatedTest(RUN_COUNT)
         void neutralFeelings() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = defaultFeelingWords.getRandom(NEUTRAL);
-                assertMixedCase(reaction);
-                assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getNeutralSet(), reaction),
-                        String.format("Reaction must be from neutral list: %s", reaction));
-            }
+            reaction = defaultFeelingWords.getRandom(NEUTRAL);
+            assertMixedCase(reaction);
+            assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getNeutralSet(), reaction),
+                    String.format("Reaction must be from neutral list: %s", reaction));
         }
 
-        @Test
+        @RepeatedTest(RUN_COUNT)
         void veryNeutralFeelings() {
-            for (int i = 0; i < RUN_COUNT; i++) {
-                reaction = defaultFeelingWords.getRandom(VERY_NEUTRAL);
-                assertAllCaps(reaction);
-                assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getNeutralSet(), reaction),
-                        String.format("Reaction must be from neutral list: %s", reaction));
-            }
+            reaction = defaultFeelingWords.getRandom(VERY_NEUTRAL);
+            assertAllCaps(reaction);
+            assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getNeutralSet(), reaction),
+                    String.format("Reaction must be from neutral list: %s", reaction));
         }
     }
 }

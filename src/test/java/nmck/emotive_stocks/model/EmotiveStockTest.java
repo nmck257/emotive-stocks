@@ -28,6 +28,7 @@ class EmotiveStockTest {
     private static final double VERY_NEUTRAL_GROWTH_PCT = 0.03;
     private static final String TICKER = "CASH";
     private static final FeelingWords feelingWords = spy(FeelingWords.getDefault());
+    private static final FeelingThresholds feelingThresholds = FeelingThresholds.getDefault();
     private EmotiveStock emotiveStock;
 
     @BeforeAll
@@ -42,7 +43,7 @@ class EmotiveStockTest {
 
     @BeforeEach
     void setUpEmotiveStock() {
-        emotiveStock = new EmotiveStock(mockNYSE, TICKER, feelingWords);
+        emotiveStock = new EmotiveStock(mockNYSE, TICKER, feelingWords, feelingThresholds);
     }
 
     @Test
