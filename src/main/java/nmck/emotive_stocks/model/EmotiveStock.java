@@ -10,10 +10,9 @@ import java.time.LocalDate;
 public class EmotiveStock {
     private static final Logger LOGGER = LogManager.getLogger(EmotiveStock.class);
     // TODO expose feeling thresholds for config
-    // TODO determine appropriate thresholds based on data
-    private static final double NEUTRAL_THRESHOLD = 0.1;
-    private static final double GOOD_THRESHOLD = 0.5;
-    private static final double VERY_GOOD_THRESHOLD = 1.0;
+    private static final double NEUTRAL_PERCENTAGE_THRESHOLD = 0.05;
+    private static final double GOOD_PERCENTAGE_THRESHOLD = 0.2;
+    private static final double VERY_GOOD_PERCENTAGE_THRESHOLD = 1.0;
     private final FeelingWords feelingWords;
     private final NYSE nyse;
     private final String ticker;
@@ -38,11 +37,11 @@ public class EmotiveStock {
     }
 
     private Feeling assessFeelings(double dailyGrowth) {
-        if (Utils.isBetween(Math.abs(dailyGrowth), 0.0, NEUTRAL_THRESHOLD)) {
+        if (Utils.isBetween(Math.abs(dailyGrowth), 0.0, NEUTRAL_PERCENTAGE_THRESHOLD)) {
             return Feeling.VERY_NEUTRAL;
-        } else if (Utils.isBetween(Math.abs(dailyGrowth), NEUTRAL_THRESHOLD, GOOD_THRESHOLD)) {
+        } else if (Utils.isBetween(Math.abs(dailyGrowth), NEUTRAL_PERCENTAGE_THRESHOLD, GOOD_PERCENTAGE_THRESHOLD)) {
             return Feeling.NEUTRAL;
-        } else if (Utils.isBetween(Math.abs(dailyGrowth), GOOD_THRESHOLD, VERY_GOOD_THRESHOLD)) {
+        } else if (Utils.isBetween(Math.abs(dailyGrowth), GOOD_PERCENTAGE_THRESHOLD, VERY_GOOD_PERCENTAGE_THRESHOLD)) {
             return dailyGrowth > 0.0 ? Feeling.GOOD : Feeling.BAD;
         } else {
             return dailyGrowth > 0.0 ? Feeling.VERY_GOOD : Feeling.VERY_BAD;
