@@ -6,6 +6,7 @@ import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.nyse.AlphaVantageNYSE;
 import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.services.nyse.SimpleRandomNYSE;
+import nmck.emotive_stocks.services.twitter.ExternalTwitterBot;
 import nmck.emotive_stocks.services.twitter.FakeTwitterBot;
 import nmck.emotive_stocks.services.twitter.TwitterBot;
 import org.apache.logging.log4j.LogManager;
@@ -51,13 +52,19 @@ public class Lambda {
     }
 
     private TwitterBot initializeTwitterBot(LambdaConfig lambdaConfig) {
-        String twitterApiKey = lambdaConfig.getTwitterApiKey();
-        if (twitterApiKey == null) {
-            LOGGER.info("No twitter api key; using fake");
+        String twitterConsumerKey = lambdaConfig.getTwitterConsumerKey();
+        String twitterConsumerSecret = lambdaConfig.getTwitterConsumerSecret();
+        String twitterAccessToken = lambdaConfig.getTwitterAccessToken();
+        String twitterAccessTokenSecret = lambdaConfig.getTwitterAccessTokenSecret();
+
+        if (twitterConsumerKey == null || twitterConsumerSecret == null ||
+                twitterAccessToken == null || twitterAccessTokenSecret == null) {
+            LOGGER.info("Incomplete twitter config; using fake");
             return new FakeTwitterBot();
         } else {
-            // TODO implement twitter
-            throw new RuntimeException("Real twitter not yet implemented");
+            LOGGER.info("Connecting to twitter");
+            return new ExternalTwitterBot(twitterConsumerKey, twitterConsumerSecret,
+                    twitterAccessToken, twitterAccessTokenSecret);
         }
     }
 

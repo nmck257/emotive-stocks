@@ -7,8 +7,10 @@ public class LambdaConfig {
     private String reactionDate;
     private String ticker;
     private String alphaVantageApiKey;
-    private String twitterApiKey;
-    private String twitterHandle;
+    private String twitterConsumerKey;
+    private String twitterConsumerSecret;
+    private String twitterAccessToken;
+    private String twitterAccessTokenSecret;
     private Set<String> goodFeelingWords;
     private Set<String> badFeelingWords;
     private Set<String> neutralFeelingWords;
@@ -40,20 +42,36 @@ public class LambdaConfig {
         this.alphaVantageApiKey = alphaVantageApiKey;
     }
 
-    public String getTwitterApiKey() {
-        return twitterApiKey;
+    public String getTwitterConsumerKey() {
+        return twitterConsumerKey;
     }
 
-    public void setTwitterApiKey(String twitterApiKey) {
-        this.twitterApiKey = twitterApiKey;
+    public void setTwitterConsumerKey(String twitterConsumerKey) {
+        this.twitterConsumerKey = twitterConsumerKey;
     }
 
-    public String getTwitterHandle() {
-        return twitterHandle;
+    public String getTwitterConsumerSecret() {
+        return twitterConsumerSecret;
     }
 
-    public void setTwitterHandle(String twitterHandle) {
-        this.twitterHandle = twitterHandle;
+    public void setTwitterConsumerSecret(String twitterConsumerSecret) {
+        this.twitterConsumerSecret = twitterConsumerSecret;
+    }
+
+    public String getTwitterAccessToken() {
+        return twitterAccessToken;
+    }
+
+    public void setTwitterAccessToken(String twitterAccessToken) {
+        this.twitterAccessToken = twitterAccessToken;
+    }
+
+    public String getTwitterAccessTokenSecret() {
+        return twitterAccessTokenSecret;
+    }
+
+    public void setTwitterAccessTokenSecret(String twitterAccessTokenSecret) {
+        this.twitterAccessTokenSecret = twitterAccessTokenSecret;
     }
 
     public Set<String> getGoodFeelingWords() {
@@ -84,7 +102,7 @@ public class LambdaConfig {
         return neutralThreshold;
     }
 
-    public void setNeutralThreshold(double neutralThreshold) {
+    public void setNeutralThreshold(Double neutralThreshold) {
         this.neutralThreshold = neutralThreshold;
     }
 
@@ -92,7 +110,7 @@ public class LambdaConfig {
         return goodThreshold;
     }
 
-    public void setGoodThreshold(double goodThreshold) {
+    public void setGoodThreshold(Double goodThreshold) {
         this.goodThreshold = goodThreshold;
     }
 
@@ -100,7 +118,7 @@ public class LambdaConfig {
         return veryGoodThreshold;
     }
 
-    public void setVeryGoodThreshold(double veryGoodThreshold) {
+    public void setVeryGoodThreshold(Double veryGoodThreshold) {
         this.veryGoodThreshold = veryGoodThreshold;
     }
 }

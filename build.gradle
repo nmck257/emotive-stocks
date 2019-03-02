@@ -16,6 +16,7 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-core:2.8.2'
     compile 'org.apache.logging.log4j:log4j-api:2.8.2'
     compile 'com.google.code.gson:gson:2.8.5'
+    compile 'org.twitter4j:twitter4j-core:4.0.7'
 }
 
 task buildZip(type: Zip) {
