@@ -8,8 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Utils {
-    private Utils() {
-    }
+    private Utils() {}
 
     public static <T> T getRandomElement(Collection<T> collection) {
         List<T> shuffled = new ArrayList<>(collection);

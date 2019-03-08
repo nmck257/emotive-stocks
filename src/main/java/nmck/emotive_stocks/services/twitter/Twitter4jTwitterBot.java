@@ -7,11 +7,11 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class ExternalTwitterBot implements TwitterBot {
-    private static final Logger LOGGER = LogManager.getLogger(ExternalTwitterBot.class);
+public class Twitter4jTwitterBot implements TwitterBot {
+    private static final Logger LOGGER = LogManager.getLogger(Twitter4jTwitterBot.class);
     private Twitter twitter;
 
-    public ExternalTwitterBot(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
+    public Twitter4jTwitterBot(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setOAuthConsumerKey(consumerKey)
                 .setOAuthConsumerSecret(consumerSecret)

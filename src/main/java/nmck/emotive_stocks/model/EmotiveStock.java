@@ -31,6 +31,7 @@ public class EmotiveStock {
         String reaction = feelingWords.getRandom(feeling);
         LOGGER.info(String.format("Symbol %s feels %s about growth of %.2f%% and says \"%s\"",
                 ticker, feeling, growth, reaction));
+        // TODO add hashtag support (possibly refactor to isolate reaction concept)
         return String.format("%s (%.2f%%)", reaction, growth);
     }
 }

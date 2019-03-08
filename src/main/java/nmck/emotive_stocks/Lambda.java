@@ -6,7 +6,7 @@ import nmck.emotive_stocks.model.FeelingWords;
 import nmck.emotive_stocks.services.nyse.AlphaVantageNYSE;
 import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.services.nyse.SimpleRandomNYSE;
-import nmck.emotive_stocks.services.twitter.ExternalTwitterBot;
+import nmck.emotive_stocks.services.twitter.Twitter4jTwitterBot;
 import nmck.emotive_stocks.services.twitter.FakeTwitterBot;
 import nmck.emotive_stocks.services.twitter.TwitterBot;
 import org.apache.logging.log4j.LogManager;
@@ -35,9 +35,9 @@ public class Lambda {
 
     private FeelingThresholds getFeelingThresholds(LambdaConfig lambdaConfig) {
         FeelingThresholds.Builder builder = FeelingThresholds.newBuilder();
-        if (lambdaConfig.getNeutralThreshold() != null) builder.setNeutralThreshold(lambdaConfig.getNeutralThreshold());
-        if (lambdaConfig.getGoodThreshold() != null) builder.setGoodThreshold(lambdaConfig.getGoodThreshold());
-        if (lambdaConfig.getVeryGoodThreshold() != null) builder.setVeryGoodThreshold(lambdaConfig.getVeryGoodThreshold());
+        Optional.ofNullable(lambdaConfig.getNeutralThreshold()).ifPresent(builder::setNeutralThreshold);
+        Optional.ofNullable(lambdaConfig.getGoodThreshold()).ifPresent(builder::setGoodThreshold);
+        Optional.ofNullable(lambdaConfig.getVeryGoodThreshold()).ifPresent(builder::setVeryGoodThreshold);
         return builder.build();
     }
 
@@ -63,7 +63,7 @@ public class Lambda {
             return new FakeTwitterBot();
         } else {
             LOGGER.info("Connecting to twitter");
-            return new ExternalTwitterBot(twitterConsumerKey, twitterConsumerSecret,
+            return new Twitter4jTwitterBot(twitterConsumerKey, twitterConsumerSecret,
                     twitterAccessToken, twitterAccessTokenSecret);
         }
     }
