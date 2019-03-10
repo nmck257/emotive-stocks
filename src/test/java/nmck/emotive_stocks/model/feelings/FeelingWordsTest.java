@@ -1,5 +1,6 @@
-package nmck.emotive_stocks.model;
+package nmck.emotive_stocks.model.feelings;
 
+import nmck.emotive_stocks.model.feelings.FeelingWords;
 import nmck.emotive_stocks.util.Utils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
@@ -9,7 +10,7 @@ import org.mockito.internal.util.collections.Sets;
 import java.util.HashSet;
 import java.util.Set;
 
-import static nmck.emotive_stocks.model.Feeling.*;
+import static nmck.emotive_stocks.model.feelings.Feeling.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FeelingWordsTest {

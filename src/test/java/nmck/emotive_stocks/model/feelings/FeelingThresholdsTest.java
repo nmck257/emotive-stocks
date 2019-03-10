@@ -1,5 +1,7 @@
-package nmck.emotive_stocks.model;
+package nmck.emotive_stocks.model.feelings;
 
+import nmck.emotive_stocks.model.feelings.Feeling;
+import nmck.emotive_stocks.model.feelings.FeelingThresholds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;

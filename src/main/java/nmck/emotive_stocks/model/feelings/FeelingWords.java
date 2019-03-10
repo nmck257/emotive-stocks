@@ -1,4 +1,4 @@
-package nmck.emotive_stocks.model;
+package nmck.emotive_stocks.model.feelings;
 
 import com.google.common.collect.Sets;
 import nmck.emotive_stocks.util.Utils;

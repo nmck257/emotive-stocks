@@ -1,5 +1,8 @@
 package nmck.emotive_stocks.model;
 
+import nmck.emotive_stocks.model.feelings.Feeling;
+import nmck.emotive_stocks.model.feelings.FeelingThresholds;
+import nmck.emotive_stocks.model.feelings.FeelingWords;
 import nmck.emotive_stocks.services.nyse.NYSE;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

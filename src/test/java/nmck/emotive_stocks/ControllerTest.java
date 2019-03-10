@@ -2,7 +2,7 @@ package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
-import nmck.emotive_stocks.model.FeelingWords;
+import nmck.emotive_stocks.model.feelings.FeelingWords;
 import nmck.emotive_stocks.services.twitter.FakeTwitterBot;
 import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.services.nyse.SimpleRandomNYSE;

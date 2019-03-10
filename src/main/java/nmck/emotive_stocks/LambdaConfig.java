@@ -1,8 +1,8 @@
 package nmck.emotive_stocks;
 
 import com.google.common.base.Strings;
-import nmck.emotive_stocks.model.FeelingThresholds;
-import nmck.emotive_stocks.model.FeelingWords;
+import nmck.emotive_stocks.model.feelings.FeelingThresholds;
+import nmck.emotive_stocks.model.feelings.FeelingWords;
 import nmck.emotive_stocks.model.Hashtag;
 import nmck.emotive_stocks.services.nyse.AlphaVantageNYSE;
 import nmck.emotive_stocks.services.nyse.NYSE;

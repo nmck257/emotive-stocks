@@ -1,6 +1,6 @@
-package nmck.emotive_stocks.model;
+package nmck.emotive_stocks.model.feelings;
 
-enum Feeling {
+public enum Feeling {
     GOOD,
     NEUTRAL,
     BAD,

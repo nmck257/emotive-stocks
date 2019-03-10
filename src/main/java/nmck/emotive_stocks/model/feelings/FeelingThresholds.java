@@ -1,4 +1,4 @@
-package nmck.emotive_stocks.model;
+package nmck.emotive_stocks.model.feelings;
 
 import nmck.emotive_stocks.util.Utils;
 
