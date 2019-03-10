@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Deserialized from AWS Lambda context (hence the public constructor and protected setters)
+ */
 public class LambdaConfig {
     private static final Logger LOGGER = LogManager.getLogger(LambdaConfig.class);
     private String reactionDate;
@@ -33,13 +36,71 @@ public class LambdaConfig {
     private Double neutralThreshold;
     private Double goodThreshold;
     private Double veryGoodThreshold;
-    private List<String> hashtagStringList;
+    private List<String> hashtags;
+
+    public LambdaConfig() {}
+
+    protected void setReactionDate(String reactionDate) {
+        this.reactionDate = reactionDate;
+    }
+
+    protected void setTicker(String ticker) {
+        this.ticker = ticker;
+    }
+
+    protected void setAlphaVantageApiKey(String alphaVantageApiKey) {
+        this.alphaVantageApiKey = alphaVantageApiKey;
+    }
+
+    protected void setTwitterConsumerKey(String twitterConsumerKey) {
+        this.twitterConsumerKey = twitterConsumerKey;
+    }
+
+    protected void setTwitterConsumerSecret(String twitterConsumerSecret) {
+        this.twitterConsumerSecret = twitterConsumerSecret;
+    }
+
+    protected void setTwitterAccessToken(String twitterAccessToken) {
+        this.twitterAccessToken = twitterAccessToken;
+    }
+
+    protected void setTwitterAccessTokenSecret(String twitterAccessTokenSecret) {
+        this.twitterAccessTokenSecret = twitterAccessTokenSecret;
+    }
+
+    protected void setGoodFeelingWords(Set<String> goodFeelingWords) {
+        this.goodFeelingWords = goodFeelingWords;
+    }
+
+    protected void setBadFeelingWords(Set<String> badFeelingWords) {
+        this.badFeelingWords = badFeelingWords;
+    }
+
+    protected void setNeutralFeelingWords(Set<String> neutralFeelingWords) {
+        this.neutralFeelingWords = neutralFeelingWords;
+    }
+
+    protected void setNeutralThreshold(Double neutralThreshold) {
+        this.neutralThreshold = neutralThreshold;
+    }
+
+    protected void setGoodThreshold(Double goodThreshold) {
+        this.goodThreshold = goodThreshold;
+    }
+
+    protected void setVeryGoodThreshold(Double veryGoodThreshold) {
+        this.veryGoodThreshold = veryGoodThreshold;
+    }
+
+    protected void setHashtags(List<String> hashtags) {
+        this.hashtags = hashtags;
+    }
 
     private LambdaConfig(String reactionDate, String ticker, String alphaVantageApiKey, String twitterConsumerKey,
                          String twitterConsumerSecret, String twitterAccessToken, String twitterAccessTokenSecret,
                          Set<String> goodFeelingWords, Set<String> badFeelingWords, Set<String> neutralFeelingWords,
                          Double neutralThreshold, Double goodThreshold, Double veryGoodThreshold,
-                         List<String> hashtagStringList) {
+                         List<String> hashtags) {
         this.reactionDate = reactionDate;
         this.ticker = ticker;
         this.alphaVantageApiKey = alphaVantageApiKey;
@@ -53,7 +114,7 @@ public class LambdaConfig {
         this.neutralThreshold = neutralThreshold;
         this.goodThreshold = goodThreshold;
         this.veryGoodThreshold = veryGoodThreshold;
-        this.hashtagStringList = hashtagStringList;
+        this.hashtags = hashtags;
     }
 
     public LocalDate getReactionDate() {
@@ -83,8 +144,8 @@ public class LambdaConfig {
     }
 
     public List<Hashtag> getHashtagList() {
-        if (hashtagStringList != null) {
-            return Hashtag.fromStringList(hashtagStringList);
+        if (hashtags != null) {
+            return Hashtag.fromStringList(hashtags);
         } else {
             LOGGER.info("No hashtag list; using default");
             return Hashtag.getDefaultList();
