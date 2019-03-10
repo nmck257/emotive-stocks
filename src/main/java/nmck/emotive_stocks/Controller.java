@@ -1,8 +1,6 @@
 package nmck.emotive_stocks;
 
-import nmck.emotive_stocks.model.EmotiveStock;
-import nmck.emotive_stocks.model.FeelingThresholds;
-import nmck.emotive_stocks.model.FeelingWords;
+import nmck.emotive_stocks.model.*;
 import nmck.emotive_stocks.services.nyse.NYSE;
 import nmck.emotive_stocks.services.twitter.TwitterBot;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     private static final Logger LOGGER = LogManager.getLogger(Lambda.class);
@@ -18,6 +18,7 @@ public class Controller {
     private final TwitterBot twitterBot;
     private FeelingWords feelingWords = FeelingWords.getDefault();
     private FeelingThresholds feelingThresholds = FeelingThresholds.getDefault();
+    private List<Hashtag> hashtagList = Hashtag.getDefaultList();
 
     public Controller(@Nonnull NYSE nyse, @Nonnull TwitterBot twitterBot) {
         this.nyse = nyse;
@@ -40,13 +41,21 @@ public class Controller {
         this.feelingThresholds = feelingThresholds;
     }
 
+    public List<Hashtag> getHashtagList() {
+        return new ArrayList<>(hashtagList);
+    }
+
+    public void setHashtagList(List<Hashtag> hashtagList) {
+        this.hashtagList = new ArrayList<>(hashtagList);
+    }
+
     @Nullable
     public String reactTo(String ticker, LocalDate reactionDate) {
         requireTickerIsValid(ticker, nyse);
         if (nyse.isMarketDay(reactionDate)) {
-            EmotiveStock emotiveStock = new EmotiveStock(nyse, ticker, feelingWords, feelingThresholds);
+            EmotiveStock emotiveStock = new EmotiveStock(nyse, ticker, feelingWords, feelingThresholds, hashtagList);
 
-            String reaction = emotiveStock.reactTo(reactionDate);
+            String reaction = emotiveStock.reactTo(reactionDate).toString();
             twitterBot.tweet(reaction);
 
             return reaction;

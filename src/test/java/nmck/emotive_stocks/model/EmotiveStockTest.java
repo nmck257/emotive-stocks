@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,6 +30,7 @@ class EmotiveStockTest {
     private static final String TICKER = "CASH";
     private static final FeelingWords feelingWords = spy(FeelingWords.getDefault());
     private static final FeelingThresholds feelingThresholds = FeelingThresholds.getDefault();
+    private static final List<Hashtag> hashtags = Hashtag.getDefaultList();
     private EmotiveStock emotiveStock;
 
     @BeforeAll
@@ -43,7 +45,7 @@ class EmotiveStockTest {
 
     @BeforeEach
     void setUpEmotiveStock() {
-        emotiveStock = new EmotiveStock(mockNYSE, TICKER, feelingWords, feelingThresholds);
+        emotiveStock = new EmotiveStock(mockNYSE, TICKER, feelingWords, feelingThresholds, hashtags);
     }
 
     @Test
@@ -53,16 +55,12 @@ class EmotiveStockTest {
 
     @Nested
     class ReactTo {
-        final static String reactionPattern = ".* \\(-?\\d+\\.\\d{2}%\\)";
-        String reaction;
+        ReactionTweet reaction;
 
         private void dayTest(LocalDate day, Feeling feeling, double growth) {
             reaction = emotiveStock.reactTo(day);
             verify(feelingWords).getRandom(feeling);
-            assertTrue(reaction.matches(reactionPattern),
-                    String.format("Reaction \"%s\" must look like \"words (-0.00%%)\"", reaction));
-            assertTrue(reaction.contains(String.valueOf(growth)),
-                    String.format("Reaction %s must contain growth %.2f", reaction, growth));
+            assertEquals(growth, reaction.getGrowth());
         }
 
         @Test

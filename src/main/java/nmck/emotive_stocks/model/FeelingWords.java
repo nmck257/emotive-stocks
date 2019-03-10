@@ -91,9 +91,4 @@ public class FeelingWords {
                 Objects.equals(bad, that.bad) &&
                 Objects.equals(neutral, that.neutral);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(good, bad, neutral);
-    }
 }

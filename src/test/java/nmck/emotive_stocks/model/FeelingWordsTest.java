@@ -50,11 +50,11 @@ class FeelingWordsTest {
         private String reaction;
 
         private void assertAllCaps(String reaction) {
-            assertTrue(reaction.matches("[^a-z]+"), String.format("Reaction must be all-caps: %s", reaction));
+            assertTrue(reaction.matches("[^a-z]+"), String.format("ReactionTweet must be all-caps: %s", reaction));
         }
 
         private void assertMixedCase(String reaction) {
-            assertTrue(reaction.matches(".*[a-z]+.*"), String.format("Reaction must be mixed case: %s", reaction));
+            assertTrue(reaction.matches(".*[a-z]+.*"), String.format("ReactionTweet must be mixed case: %s", reaction));
         }
 
         @RepeatedTest(RUN_COUNT)
@@ -62,7 +62,7 @@ class FeelingWordsTest {
             reaction = defaultFeelingWords.getRandom(GOOD);
             assertMixedCase(reaction);
             assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getGoodSet(), reaction),
-                    String.format("Reaction must be from good list: %s", reaction));
+                    String.format("ReactionTweet must be from good list: %s", reaction));
         }
 
         @RepeatedTest(RUN_COUNT)
@@ -70,7 +70,7 @@ class FeelingWordsTest {
             reaction = defaultFeelingWords.getRandom(VERY_GOOD);
             assertAllCaps(reaction);
             assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getGoodSet(), reaction),
-                    String.format("Reaction must be from good list: %s", reaction));
+                    String.format("ReactionTweet must be from good list: %s", reaction));
         }
 
         @RepeatedTest(RUN_COUNT)
@@ -78,7 +78,7 @@ class FeelingWordsTest {
             reaction = defaultFeelingWords.getRandom(BAD);
             assertMixedCase(reaction);
             assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getBadSet(), reaction),
-                    String.format("Reaction must be from bad list: %s", reaction));
+                    String.format("ReactionTweet must be from bad list: %s", reaction));
         }
 
         @RepeatedTest(RUN_COUNT)
@@ -86,7 +86,7 @@ class FeelingWordsTest {
             reaction = defaultFeelingWords.getRandom(VERY_BAD);
             assertAllCaps(reaction);
             assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getBadSet(), reaction),
-                    String.format("Reaction must be from bad list: %s", reaction));
+                    String.format("ReactionTweet must be from bad list: %s", reaction));
         }
 
         @RepeatedTest(RUN_COUNT)
@@ -94,7 +94,7 @@ class FeelingWordsTest {
             reaction = defaultFeelingWords.getRandom(NEUTRAL);
             assertMixedCase(reaction);
             assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getNeutralSet(), reaction),
-                    String.format("Reaction must be from neutral list: %s", reaction));
+                    String.format("ReactionTweet must be from neutral list: %s", reaction));
         }
 
         @RepeatedTest(RUN_COUNT)
@@ -102,7 +102,7 @@ class FeelingWordsTest {
             reaction = defaultFeelingWords.getRandom(VERY_NEUTRAL);
             assertAllCaps(reaction);
             assertTrue(Utils.containsCaseInsensitive(defaultFeelingWords.getNeutralSet(), reaction),
-                    String.format("Reaction must be from neutral list: %s", reaction));
+                    String.format("ReactionTweet must be from neutral list: %s", reaction));
         }
     }
 }

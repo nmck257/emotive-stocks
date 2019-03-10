@@ -31,7 +31,7 @@ class ControllerTest {
     @Test
     void nonMarketDay() {
         String reaction = controller.reactTo(TICKER, A_SUNDAY);
-        assertNull(reaction, "Reaction must be null if markets are closed");
+        assertNull(reaction, "ReactionTweet must be null if markets are closed");
     }
 
     @Test

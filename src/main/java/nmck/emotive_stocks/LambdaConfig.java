@@ -1,9 +1,25 @@
 package nmck.emotive_stocks;
 
+import com.google.common.base.Strings;
+import nmck.emotive_stocks.model.FeelingThresholds;
+import nmck.emotive_stocks.model.FeelingWords;
+import nmck.emotive_stocks.model.Hashtag;
+import nmck.emotive_stocks.services.nyse.AlphaVantageNYSE;
+import nmck.emotive_stocks.services.nyse.NYSE;
+import nmck.emotive_stocks.services.nyse.SimpleRandomNYSE;
+import nmck.emotive_stocks.services.twitter.FakeTwitterBot;
+import nmck.emotive_stocks.services.twitter.Twitter4jTwitterBot;
+import nmck.emotive_stocks.services.twitter.TwitterBot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class LambdaConfig {
+    private static final Logger LOGGER = LogManager.getLogger(LambdaConfig.class);
     private String reactionDate;
     private String ticker;
     private String alphaVantageApiKey;
@@ -17,108 +33,185 @@ public class LambdaConfig {
     private Double neutralThreshold;
     private Double goodThreshold;
     private Double veryGoodThreshold;
+    private List<String> hashtagStringList;
 
-    public LocalDate getReactionDate() {
-        return reactionDate == null ? null : LocalDate.parse(reactionDate);
+    private LambdaConfig(String reactionDate, String ticker, String alphaVantageApiKey, String twitterConsumerKey,
+                         String twitterConsumerSecret, String twitterAccessToken, String twitterAccessTokenSecret,
+                         Set<String> goodFeelingWords, Set<String> badFeelingWords, Set<String> neutralFeelingWords,
+                         Double neutralThreshold, Double goodThreshold, Double veryGoodThreshold,
+                         List<String> hashtagStringList) {
+        this.reactionDate = reactionDate;
+        this.ticker = ticker;
+        this.alphaVantageApiKey = alphaVantageApiKey;
+        this.twitterConsumerKey = twitterConsumerKey;
+        this.twitterConsumerSecret = twitterConsumerSecret;
+        this.twitterAccessToken = twitterAccessToken;
+        this.twitterAccessTokenSecret = twitterAccessTokenSecret;
+        this.goodFeelingWords = goodFeelingWords;
+        this.badFeelingWords = badFeelingWords;
+        this.neutralFeelingWords = neutralFeelingWords;
+        this.neutralThreshold = neutralThreshold;
+        this.goodThreshold = goodThreshold;
+        this.veryGoodThreshold = veryGoodThreshold;
+        this.hashtagStringList = hashtagStringList;
     }
 
-    public void setReactionDate(String reactionDate) {
-        this.reactionDate = reactionDate;
+    public LocalDate getReactionDate() {
+        LocalDate date = reactionDate == null
+                ? LocalDate.now()
+                : LocalDate.parse(reactionDate);
+        LOGGER.info("Using date: " + date.toString());
+        return date;
+    }
+
+    public FeelingThresholds getFeelingThresholds() {
+        FeelingThresholds.Builder builder = FeelingThresholds.newBuilder();
+        Optional.ofNullable(neutralThreshold).ifPresent(builder::setNeutralThreshold);
+        Optional.ofNullable(goodThreshold).ifPresent(builder::setGoodThreshold);
+        Optional.ofNullable(veryGoodThreshold).ifPresent(builder::setVeryGoodThreshold);
+        return builder.build();
+    }
+
+    public FeelingWords getFeelingWords() {
+        Set<String> good = Optional.ofNullable(goodFeelingWords)
+                .orElse(FeelingWords.getDefaultGoodFeelings());
+        Set<String> bad = Optional.ofNullable(badFeelingWords)
+                .orElse(FeelingWords.getDefaultBadFeelings());
+        Set<String> neutral = Optional.ofNullable(neutralFeelingWords)
+                .orElse(FeelingWords.getDefaultNeutralFeelings());
+        return new FeelingWords(good, bad, neutral);
+    }
+
+    public List<Hashtag> getHashtagList() {
+        if (hashtagStringList != null) {
+            return Hashtag.fromStringList(hashtagStringList);
+        } else {
+            LOGGER.info("No hashtag list; using default");
+            return Hashtag.getDefaultList();
+        }
+    }
+
+    public TwitterBot initializeTwitterBot() {
+        if (twitterConsumerKey == null || twitterConsumerSecret == null ||
+                twitterAccessToken == null || twitterAccessTokenSecret == null) {
+            LOGGER.info("Incomplete twitter config; using fake");
+            return new FakeTwitterBot();
+        } else {
+            LOGGER.info("Connecting to twitter");
+            return new Twitter4jTwitterBot(twitterConsumerKey, twitterConsumerSecret,
+                    twitterAccessToken, twitterAccessTokenSecret);
+        }
+    }
+
+    public NYSE initializeNYSE() {
+        if (alphaVantageApiKey == null) {
+            LOGGER.info("No nyse api key; using simple random");
+            return new SimpleRandomNYSE();
+        } else {
+            LOGGER.info("Using NYSE data from Alpha Vantage");
+            return new AlphaVantageNYSE(alphaVantageApiKey);
+        }
     }
 
     public String getTicker() {
+        if (Strings.isNullOrEmpty(ticker)) {
+            LOGGER.error("No stock symbol in config");
+            throw new RuntimeException();
+        }
+        LOGGER.info("Using ticker: " + ticker);
         return ticker;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
-    }
+    public static class Builder {
+        private String reactionDate;
+        private String ticker;
+        private String alphaVantageApiKey;
+        private String twitterConsumerKey;
+        private String twitterConsumerSecret;
+        private String twitterAccessToken;
+        private String twitterAccessTokenSecret;
+        private Set<String> goodFeelingWords;
+        private Set<String> badFeelingWords;
+        private Set<String> neutralFeelingWords;
+        private Double neutralThreshold;
+        private Double goodThreshold;
+        private Double veryGoodThreshold;
+        private List<String> hashtagStringList;
 
-    public String getAlphaVantageApiKey() {
-        return alphaVantageApiKey;
-    }
+        public Builder setReactionDate(String reactionDate) {
+            this.reactionDate = reactionDate;
+            return this;
+        }
 
-    public void setAlphaVantageApiKey(String alphaVantageApiKey) {
-        this.alphaVantageApiKey = alphaVantageApiKey;
-    }
+        public Builder setTicker(String ticker) {
+            this.ticker = ticker;
+            return this;
+        }
 
-    public String getTwitterConsumerKey() {
-        return twitterConsumerKey;
-    }
+        public Builder setAlphaVantageApiKey(String alphaVantageApiKey) {
+            this.alphaVantageApiKey = alphaVantageApiKey;
+            return this;
+        }
 
-    public void setTwitterConsumerKey(String twitterConsumerKey) {
-        this.twitterConsumerKey = twitterConsumerKey;
-    }
+        public Builder setTwitterConsumerKey(String twitterConsumerKey) {
+            this.twitterConsumerKey = twitterConsumerKey;
+            return this;
+        }
 
-    public String getTwitterConsumerSecret() {
-        return twitterConsumerSecret;
-    }
+        public Builder setTwitterConsumerSecret(String twitterConsumerSecret) {
+            this.twitterConsumerSecret = twitterConsumerSecret;
+            return this;
+        }
 
-    public void setTwitterConsumerSecret(String twitterConsumerSecret) {
-        this.twitterConsumerSecret = twitterConsumerSecret;
-    }
+        public Builder setTwitterAccessToken(String twitterAccessToken) {
+            this.twitterAccessToken = twitterAccessToken;
+            return this;
+        }
 
-    public String getTwitterAccessToken() {
-        return twitterAccessToken;
-    }
+        public Builder setTwitterAccessTokenSecret(String twitterAccessTokenSecret) {
+            this.twitterAccessTokenSecret = twitterAccessTokenSecret;
+            return this;
+        }
 
-    public void setTwitterAccessToken(String twitterAccessToken) {
-        this.twitterAccessToken = twitterAccessToken;
-    }
+        public Builder setGoodFeelingWords(Set<String> goodFeelingWords) {
+            this.goodFeelingWords = goodFeelingWords;
+            return this;
+        }
 
-    public String getTwitterAccessTokenSecret() {
-        return twitterAccessTokenSecret;
-    }
+        public Builder setBadFeelingWords(Set<String> badFeelingWords) {
+            this.badFeelingWords = badFeelingWords;
+            return this;
+        }
 
-    public void setTwitterAccessTokenSecret(String twitterAccessTokenSecret) {
-        this.twitterAccessTokenSecret = twitterAccessTokenSecret;
-    }
+        public Builder setNeutralFeelingWords(Set<String> neutralFeelingWords) {
+            this.neutralFeelingWords = neutralFeelingWords;
+            return this;
+        }
 
-    public Set<String> getGoodFeelingWords() {
-        return goodFeelingWords;
-    }
+        public Builder setNeutralThreshold(Double neutralThreshold) {
+            this.neutralThreshold = neutralThreshold;
+            return this;
+        }
 
-    public void setGoodFeelingWords(Set<String> goodFeelingWords) {
-        this.goodFeelingWords = goodFeelingWords;
-    }
+        public Builder setGoodThreshold(Double goodThreshold) {
+            this.goodThreshold = goodThreshold;
+            return this;
+        }
 
-    public Set<String> getBadFeelingWords() {
-        return badFeelingWords;
-    }
+        public Builder setVeryGoodThreshold(Double veryGoodThreshold) {
+            this.veryGoodThreshold = veryGoodThreshold;
+            return this;
+        }
 
-    public void setBadFeelingWords(Set<String> badFeelingWords) {
-        this.badFeelingWords = badFeelingWords;
-    }
+        public Builder setHashtagStringList(List<String> hashtagStringList) {
+            this.hashtagStringList = hashtagStringList;
+            return this;
+        }
 
-    public Set<String> getNeutralFeelingWords() {
-        return neutralFeelingWords;
-    }
-
-    public void setNeutralFeelingWords(Set<String> neutralFeelingWords) {
-        this.neutralFeelingWords = neutralFeelingWords;
-    }
-
-    public Double getNeutralThreshold() {
-        return neutralThreshold;
-    }
-
-    public void setNeutralThreshold(Double neutralThreshold) {
-        this.neutralThreshold = neutralThreshold;
-    }
-
-    public Double getGoodThreshold() {
-        return goodThreshold;
-    }
-
-    public void setGoodThreshold(Double goodThreshold) {
-        this.goodThreshold = goodThreshold;
-    }
-
-    public Double getVeryGoodThreshold() {
-        return veryGoodThreshold;
-    }
-
-    public void setVeryGoodThreshold(Double veryGoodThreshold) {
-        this.veryGoodThreshold = veryGoodThreshold;
+        public LambdaConfig build() {
+            return new LambdaConfig(reactionDate, ticker, alphaVantageApiKey, twitterConsumerKey, twitterConsumerSecret,
+                    twitterAccessToken, twitterAccessTokenSecret, goodFeelingWords, badFeelingWords,
+                    neutralFeelingWords, neutralThreshold, goodThreshold, veryGoodThreshold, hashtagStringList);
+        }
     }
 }
