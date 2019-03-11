@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Deserialized from AWS Lambda context (hence the public constructor and protected setters)
+ * Deserialized from AWS Lambda context (hence the protected constructor and setters)
  */
 @SuppressWarnings("unused")
 public class LambdaConfig {
@@ -39,7 +39,7 @@ public class LambdaConfig {
     private Double veryGoodThreshold;
     private List<String> hashtags;
 
-    public LambdaConfig() {}
+    protected LambdaConfig() {}
 
     protected void setReactionDate(String reactionDate) {
         this.reactionDate = reactionDate;

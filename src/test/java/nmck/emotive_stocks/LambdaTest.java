@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class LambdaTest {
     private static final String TICKER = "CASH";
     private Lambda lambda;
+    private LambdaConfig lambdaConfig;
     private LambdaConfig.Builder lambdaConfigBuilder;
 
     @BeforeEach
@@ -27,8 +28,8 @@ class LambdaTest {
 
     @Test
     void validTickerNoException() {
-        lambdaConfigBuilder.setTicker(TICKER);
-        lambda.handle(lambdaConfigBuilder.build());
+        lambdaConfig = lambdaConfigBuilder.setTicker(TICKER).build();
+        lambda.handle(lambdaConfig);
     }
 
     @Nested
@@ -40,55 +41,65 @@ class LambdaTest {
 
         @Test
         void customGoodNoException() {
-            lambdaConfigBuilder.setGoodFeelingWords(Sets.newHashSet("word"));
-            lambda.handle(lambdaConfigBuilder.build());
+            LambdaConfig lambdaConfig = lambdaConfigBuilder
+                    .setGoodFeelingWords(Sets.newHashSet("word"))
+                    .build();
+            lambda.handle(lambdaConfig);
         }
 
         @Test
         void customBadNoException() {
-            lambdaConfigBuilder.setBadFeelingWords(Sets.newHashSet("word"));
-            lambda.handle(lambdaConfigBuilder.build());
+            lambdaConfig = lambdaConfigBuilder
+                    .setBadFeelingWords(Sets.newHashSet("word"))
+                    .build();
+            lambda.handle(lambdaConfig);
         }
 
         @Test
         void customNeutralNoException() {
-            lambdaConfigBuilder.setNeutralFeelingWords(Sets.newHashSet("word"));
-            lambda.handle(lambdaConfigBuilder.build());
+            lambdaConfig = lambdaConfigBuilder
+                    .setNeutralFeelingWords(Sets.newHashSet("word"))
+                    .build();
+            lambda.handle(lambdaConfig);
         }
 
         @Test
         void allCustomNoException() {
-            lambdaConfigBuilder.setGoodFeelingWords(Sets.newHashSet("word"));
-            lambdaConfigBuilder.setBadFeelingWords(Sets.newHashSet("word"));
-            lambdaConfigBuilder.setNeutralFeelingWords(Sets.newHashSet("word"));
-            lambda.handle(lambdaConfigBuilder.build());
+            lambdaConfig = lambdaConfigBuilder
+                    .setGoodFeelingWords(Sets.newHashSet("word"))
+                    .setBadFeelingWords(Sets.newHashSet("word"))
+                    .setNeutralFeelingWords(Sets.newHashSet("word"))
+                    .build();
+            lambda.handle(lambdaConfig);
         }
 
         @Nested
         class EmptyCollectionsThrowExceptions {
             @Test
             void emptyGood() {
-                lambdaConfigBuilder.setGoodFeelingWords(new HashSet<>());
-                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfigBuilder.build()));
+                lambdaConfig = lambdaConfigBuilder.setGoodFeelingWords(new HashSet<>()).build();
+                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfig));
             }
 
             @Test
             void emptyBad() {
-                lambdaConfigBuilder.setBadFeelingWords(new HashSet<>());
-                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfigBuilder.build()));
+                lambdaConfig = lambdaConfigBuilder.setBadFeelingWords(new HashSet<>()).build();
+                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfig));
             }
 
             @Test
             void emptyNeutral() {
-                lambdaConfigBuilder.setNeutralFeelingWords(new HashSet<>());
-                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfigBuilder.build()));
+                lambdaConfig = lambdaConfigBuilder.setNeutralFeelingWords(new HashSet<>()).build();
+                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfig));
             }
 
             @Test
             void mixedEmptyNonEmpty() {
-                lambdaConfigBuilder.setGoodFeelingWords(new HashSet<>());
-                lambdaConfigBuilder.setBadFeelingWords(Sets.newHashSet("word"));
-                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfigBuilder.build()));
+                lambdaConfig = lambdaConfigBuilder
+                        .setGoodFeelingWords(new HashSet<>())
+                        .setBadFeelingWords(Sets.newHashSet("word"))
+                        .build();
+                assertThrows(IllegalArgumentException.class, () -> lambda.handle(lambdaConfig));
             }
         }
     }
