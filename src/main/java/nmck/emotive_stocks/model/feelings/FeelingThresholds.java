@@ -6,9 +6,9 @@ public class FeelingThresholds {
     private static final double DEFAULT_NEUTRAL_PERCENTAGE_THRESHOLD = 0.05;
     private static final double DEFAULT_GOOD_PERCENTAGE_THRESHOLD = 0.2;
     private static final double DEFAULT_VERY_GOOD_PERCENTAGE_THRESHOLD = 1.0;
-    private double neutralThreshold;
-    private double goodThreshold;
-    private double veryGoodThreshold;
+    private final double neutralThreshold;
+    private final double goodThreshold;
+    private final double veryGoodThreshold;
 
     private FeelingThresholds(double neutralThreshold, double goodThreshold, double veryGoodThreshold) {
         this.neutralThreshold = neutralThreshold;

@@ -9,7 +9,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class Twitter4jTwitterBot implements TwitterBot {
     private static final Logger LOGGER = LogManager.getLogger(Twitter4jTwitterBot.class);
-    private Twitter twitter;
+    private final Twitter twitter;
 
     public Twitter4jTwitterBot(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
         ConfigurationBuilder cb = new ConfigurationBuilder();

@@ -3,9 +3,9 @@ package nmck.emotive_stocks.model;
 import java.util.List;
 
 public class ReactionTweet {
-    private String phrase;
-    private double growth;
-    private List<Hashtag> hashtags;
+    private final String phrase;
+    private final double growth;
+    private final List<Hashtag> hashtags;
 
     public ReactionTweet(String phrase, double growth, List<Hashtag> hashtags) {
         this.phrase = phrase;

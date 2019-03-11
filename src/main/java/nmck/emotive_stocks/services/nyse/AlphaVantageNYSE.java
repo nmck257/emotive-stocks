@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class AlphaVantageNYSE implements NYSE {
     private static final Logger LOGGER = LogManager.getLogger(AlphaVantageNYSE.class);
     private static final String DEFAULT_SYMBOL = "MSFT";
-    private LoadingCache<String, Response> apiResponseCache = CacheBuilder.newBuilder()
+    private final LoadingCache<String, Response> apiResponseCache = CacheBuilder.newBuilder()
             .expireAfterWrite(1, TimeUnit.MINUTES)
             .build(CacheLoader.from(this::sendRequest));
     private String apiKey = "demo";

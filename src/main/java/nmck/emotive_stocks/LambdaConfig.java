@@ -21,6 +21,7 @@ import java.util.Set;
 /**
  * Deserialized from AWS Lambda context (hence the public constructor and protected setters)
  */
+@SuppressWarnings("unused")
 public class LambdaConfig {
     private static final Logger LOGGER = LogManager.getLogger(LambdaConfig.class);
     private String reactionDate;
@@ -183,6 +184,7 @@ public class LambdaConfig {
         return ticker;
     }
 
+    @SuppressWarnings("unused")
     public static class Builder {
         private String reactionDate;
         private String ticker;
